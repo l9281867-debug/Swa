@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AKKA.exe 💀</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    background: #080808;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+/* ---------- LOADING SCREEN ---------- */
+
+#loadingScreen {
+    position: fixed;
+    inset: 0;
+    background: #080808;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+    padding: 25px;
+}
+
+.loader {
+    width: 80px;
+    height: 80px;
+    border: 7px solid #333;
+    border-top: 7px solid #ff4fa3;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 25px;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.loadingText {
+    color: #ff8ac5;
+    font-size: 18px;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.progress {
+    width: 280px;
+    height: 10px;
+    background: #292929;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.progressBar {
+    width: 0%;
+    height: 100%;
+    background: #ff4fa3;
+    transition: width 0.2s;
+}
+
+#percent {
+    margin-top: 10px;
+    color: #aaa;
+}
+
+/* ---------- MAIN ---------- */
+
+.container {
+    width: 92%;
+    max-width: 500px;
+    background: #151515;
+    border: 2px solid #ff4fa3;
+    border-radius: 28px;
+    padding: 28px 20px;
+    text-align: center;
+    box-shadow: 0 0 35px rgba(255,79,163,0.25);
+}
+
+h1 {
+    font-size: 30px;
+    color: #ff70b5;
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    color: #aaa;
+    margin-bottom: 25px;
+    line-height: 1.5;
+}
+
+.buttons {
+    display: grid;
+    gap: 12px;
+}
+
+button {
+    width: 100%;
+    border: none;
+    border-radius: 15px;
+    padding: 15px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    background: #ff4fa3;
+    color: white;
+    transition: 0.2s;
+}
+
+button:hover {
+    transform: scale(1.03);
+    background: #ff75ba;
+}
+
+#message {
+    margin-top: 20px;
+    min-height: 80px;
+    padding: 18px;
+    background: #222;
+    border-radius: 15px;
+    color: #eee;
+    line-height: 1.5;
+}
+
+/* ---------- MOVING BUTTON ---------- */
+
+#escapeBtn {
+    position: relative;
+}
+
+/* ---------- POPUP ---------- */
+
+#popup {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.8);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    padding: 25px;
+}
+
+.popupBox {
+    background: #171717;
+    border: 2px solid #ff4fa3;
+    border-radius: 20px;
+    padding: 25px;
+    text-align: center;
+    width: 90%;
+    max-width: 380px;
+}
+
+.popupBox h2 {
+    color: #ff70b5;
+    margin-bottom: 15px;
+}
+
+.popupBox button {
+    margin-top: 15px;
+}
+
+/* ---------- FAKE ERROR ---------- */
+
+#error {
+    display: none;
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #ff2d55;
+    padding: 14px 20px;
+    border-radius: 12px;
+    z-index: 1100;
+    font-weight: bold;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+}
+
+/* ---------- HEARTS ---------- */
+
+.heart {
+    position: fixed;
+    bottom: -30px;
+    font-size: 25px;
+    animation: floatUp 2.5s linear forwards;
+    pointer-events: none;
+    z-index: 2000;
+}
+
+@keyframes floatUp {
+    to {
+        transform: translateY(-100vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+.shake {
+    animation: shake 0.4s;
+}
+
+@keyframes shake {
+    0%,100% { transform: translateX(0); }
+    25% { transform: translateX(-8px); }
+    75% { transform: translateX(8px); }
+}
+</style>
+</head>
+
+<body>
+
+<!-- FAKE LOADING -->
+
+<div id="loadingScreen">
+
+    <div class="loader"></div>
+
+    <div class="loadingText" id="loadingText">
+        Initializing AKKA.exe...
+    </div>
+
+    <div class="progress">
+        <div class="progressBar" id="progressBar"></div>
+    </div>
+
+    <div id="percent">0%</div>
+
+</div>
+
+
+<!-- MAIN WEBSITE -->
+
+<div class="container">
+
+    <h1>💀 AKKA.exe</h1>
+
+    <p class="subtitle">
+        Elder Sister Entertainment System<br>
+        <b>WARNING: Excessive clicking may cause sibling annoyance.</b>
+    </p>
+
+    <div class="buttons">
+
+        <button onclick="scan()">
+            🔍 SCAN MY SISTER
+        </button>
+
+        <button onclick="compliment()">
+            😇 GIVE ME A COMPLIMENT
+        </button>
+
+        <button onclick="annoy()">
+            📢 PRESS TO ANNOY
+        </button>
+
+        <button onclick="chocolate()">
+            🍫 REQUEST CHOCOLATE
+        </button>
+
+        <button id="escapeBtn" onclick="escapeAttempt()">
+            🚨 DO NOT PRESS
+        </button>
+
+        <button onclick="fakeError()">
+            💻 SYSTEM CHECK
+        </button>
+
+        <button onclick="secret()">
+            🔐 UNLOCK SECRET
+        </button>
+
+        <button onclick="finalReveal()">
+            🎁 FINAL BUTTON
+        </button>
+
+    </div>
+
+    <div id="message">
+        👀 The system is watching you, akka...
+    </div>
+
+</div>
+
+
+<!-- POPUP -->
+
+<div id="popup">
+
+    <div class="popupBox">
+
+        <h2>⚠️ IMPORTANT</h2>
+
+        <p id="popupText">
+            Your sister has been detected.
+        </p>
+
+        <button onclick="closePopup()">
+            OK 😭
+        </button>
+
+    </div>
+
+</div>
+
+<div id="error">
+    💀 SYSTEM ERROR: Too much elder-sister energy detected.
+</div>
+
+
+<script>
+
+/* ---------- LOADING ---------- */
+
+let progress = 0;
+
+const loadingMessages = [
+    "Initializing AKKA.exe...",
+    "Detecting elder sister...",
+    "Analyzing attitude...",
+    "Calculating annoyance level...",
+    "Installing unnecessary drama...",
+    "Preparing sibling attack...",
+    "Almost ready...",
+    "WELCOME, AKKA 💀"
+];
+
+const interval = setInterval(() => {
+
+    progress += Math.floor(Math.random() * 8) + 4;
+
+    if(progress >= 100) {
+        progress = 100;
+        clearInterval(interval);
+
+        setTimeout(() => {
+            document.getElementById("loadingScreen").style.display = "none";
+        }, 900);
+    }
+
+    document.getElementById("progressBar").style.width = progress + "%";
+    document.getElementById("percent").innerText = progress + "%";
+
+    let index = Math.min(
+        Math.floor(progress / 13),
+        loadingMessages.length - 1
+    );
+
+    document.getElementById("loadingText").innerText =
+        loadingMessages[index];
+
+}, 300);
+
+
+/* ---------- MESSAGE ---------- */
+
+function show(text) {
+
+    const box = document.getElementById("message");
+
+    box.innerHTML = text;
+
+    box.classList.remove("shake");
+
+    void box.offsetWidth;
+
+    box.classList.add("shake");
+}
+
+
+/* ---------- SCAN ---------- */
+
+function scan() {
+
+    show(`
+        🔍 SCANNING...<br><br>
+        Attitude: 97%<br>
+        Drama: 84%<br>
+        Elder-sister authority: 100%<br>
+        Annoyance resistance: 0% 💀
+    `);
+
+}
+
+
+/* ---------- COMPLIMENT ---------- */
+
+function compliment() {
+
+    const compliments = [
+
+        "You're actually a really good sister. Don't tell anyone. 🤫",
+
+        "10/10 sister. 100/10 at annoying me though.",
+
+        "You're amazing. Now buy me food. 😌",
+
+        "You're my favourite elder sister. Mainly because you're my only elder sister. 💀",
+
+        "Okay fine... I love you. Happy now? 😭❤️"
+
+    ];
+
+    show(
+        compliments[Math.floor(Math.random() * compliments.length)]
+    );
+}
+
+
+/* ---------- ANNOY ---------- */
+
+function annoy() {
+
+    const messages = [
+
+        "AKKAAAAAAA 😭",
+
+        "Akka.",
+        "Akka.",
+        "Akka.",
+        "AKKA AKKA AKKA AKKA",
+
+        "Can I have ₹100? 🥺",
+
+        "I'm bored. Entertain me.",
+
+        "Look behind you 👀",
+
+        "I have something important to tell you..."
+
+    ];
+
+    show(
+        messages[Math.floor(Math.random() * messages.length)]
+    );
+
+    hearts();
+
+}
+
+
+/* ---------- CHOCOLATE ---------- */
+
+function chocolate() {
+
+    show(`
+        🍫 CHOCOLATE REQUEST SENT.<br><br>
+        Status: <b>WAITING FOR AKKA'S WALLET.</b> 💀
+    `);
+
+}
+
+
+/* ---------- ESCAPE BUTTON ---------- */
+
+let escapeCount = 0;
+
+function escapeAttempt() {
+
+    const btn = document.getElementById("escapeBtn");
+
+    escapeCount++;
+
+    if(escapeCount < 5) {
+
+        btn.style.transform =
+            `translate(
+                ${Math.random()*180-90}px,
+                ${Math.random()*100-50}px
+            )`;
+
+        show("HAHAHA YOU CAN'T ESCAPE 😭💀");
+
+    } else {
+
+        btn.style.transform = "none";
+
+        show(`
+            🚨 ESCAPE FAILED 🚨<br><br>
+            You have officially been trapped
+            inside your sibling's website.
+        `);
+
+    }
+
+}
+
+
+/* ---------- FAKE ERROR ---------- */
+
+function fakeError() {
+
+    const error = document.getElementById("error");
+
+    error.style.display = "block";
+
+    setTimeout(() => {
+
+        error.style.display = "none";
+
+    }, 2500);
+
+}
+
+
+/* ---------- SECRET ---------- */
+
+function secret() {
+
+    document.getElementById("popupText").innerHTML = `
+        🤫 SECRET FOUND.<br><br>
+        Your little sibling secretly thinks
+        you're pretty awesome. ❤️<br><br>
+        Unfortunately, they will never admit it
+        without being forced.
+    `;
+
+    document.getElementById("popup").style.display = "flex";
+
+}
+
+
+/* ---------- CLOSE ---------- */
+
+function closePopup() {
+
+    document.getElementById("popup").style.display = "none";
+
+}
+
+
+/* ---------- FINAL ---------- */
+
+function finalReveal() {
+
+    show(`
+        🎉 CONGRATULATIONS 🎉<br><br>
+
+        You survived AKKA.exe.<br><br>
+
+        You clicked buttons.<br>
+        You fell for fake warnings.<br>
+        You tried to escape.<br><br>
+
+        And for absolutely no reason...
+
+        <br><br>
+
+        <b>❤️ I LOVE YOU, AKKA ❤️</b>
+
+        <br><br>
+
+        Now give me chocolate. 🍫
+    `);
+
+    hearts();
+
+}
+
+
+/* ---------- FLOATING EMOJIS ---------- */
+
+function hearts() {
+
+    for(let i = 0; i < 15; i++) {
+
+        const heart = document.createElement("div");
+
+        heart.className = "heart";
+
+        heart.innerText =
+            ["❤️","💗","💀","😭","✨","😂"][Math.floor(Math.random()*6)];
+
+        heart.style.left =
+            Math.random() * 100 + "vw";
+
+        document.body.appendChild(heart);
+
+        setTimeout(() => {
+
+            heart.remove();
+
+        }, 2500);
+
+    }
+
+}
+
+</script>
+
+</body>
+</html>
